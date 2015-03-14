@@ -48,10 +48,6 @@ if (!isset($_SESSION)) {
 					<input type="text" name="expand" id="expand" value="55" /> 
 				</p>
 				<p>
-					<label for="island"><small>growth iterations (50-max 500)</small></label>
-					<input type="text" name="iter" id="iter" value="200" /> 
-				</p>
-				<p>
 					<label for="vision"><small>vision distance (2-max 5)</small></label>
 					<input type="text" name="vision" id="vision" value="3" /> 
 				</p>

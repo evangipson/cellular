@@ -168,6 +168,9 @@ function drown($x,$y,&$world) {
 				$world[$x][$y]++;
 			}
 		}
+		elseif($runningTotal < 6) {
+		    $world[$x][$y]=0;
+		}
 	}
 	//debug_to_console("runningTotal: ".$runningTotal);
 	/*debug_to_console("evaluating: ".($world[$x][$y]>0?"land":"water"));*/

@@ -40,17 +40,17 @@ if (!isset($_SESSION)) {
 			<h1>World Generator</h1>
 			<form class="form" action="cellular.php" method="post">
 				<p>
-					<label for="island"><small>island % chance (7-40%)</small></label>
-					<input type="text" name="island" id="island" value="15" /> 
+					<label for="island"><small>land % chance (2-12%)</small></label>
+					<input type="text" name="island" id="island" value="7" /> 
 				</p>
 				<p>
-					<label for="island"><small>expansion % chance (50-80%)</small></label>
-					<input type="text" name="expand" id="expand" value="55" /> 
+					<label for="island"><small>world cover % (50-80%)</small></label>
+					<input type="text" name="expand" id="expand" value="70" /> 
 				</p>
-				<p>
+				<!-- <p>
 					<label for="vision"><small>vision distance (2-max 5)</small></label>
 					<input type="text" name="vision" id="vision" value="3" /> 
-				</p>
+				</p> -->
 				<label for="size"><small>world size</small></label>
 				<select name="size">
 					<?php

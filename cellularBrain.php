@@ -68,7 +68,7 @@ function cellExpand($width,$height,$x,$y,&$world) {
 	}
 	// if $runningTotal == 1, we need initial expansion
 	// if it's inbetween 2 and 6, we need to expand
-	if($runningTotal == 1 || ($runningTotal > 3 && $runningTotal < 5) ) {
+	if($runningTotal == 1 || ($runningTotal > 3 && $runningTotal < 6) ) {
 		if(expandCheck()) {
 			if(expandCheck()) {
 				$world[$x-1][$y-1]=1;
@@ -138,14 +138,6 @@ function drown($x,$y,&$world) {
 			$runningTotal += 1;
 		}
 		if($runningTotal >= 7) {
-			/*$world[$x-1][$y-1]=$theCheck;
-			$world[$x][$y-1]=$theCheck;
-			$world[$x+1][$y-1]=$theCheck;
-			$world[$x-1][$y]=$theCheck;
-			$world[$x+1][$y]=$theCheck;
-			$world[$x-1][$y+1]=$theCheck;
-			$world[$x][$y+1]=$theCheck;
-			$world[$x+1][$y+1]=$theCheck;*/
 			$world[$x][$y]=1;
 		}
 		elseif($runningTotal < 1) {
@@ -328,7 +320,7 @@ function drawMap($dataArray) {
 		// gotta set up our incoming data!
 		$GLOBALS['islandChance']=$dataArray['island'];
 		$GLOBALS['expandChance']=$dataArray['expand'];
-		$GLOBALS['iter']=mt_rand(80,140);
+		$GLOBALS['iter']=mt_rand(150,250);
 		$GLOBALS['vision']=$dataArray['vision'];
 		$GLOBALS['iterCount']=0;
 		// set width and height from incoming size

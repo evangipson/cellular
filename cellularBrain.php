@@ -68,7 +68,7 @@ function cellExpand($width,$height,$x,$y,&$world) {
 	}
 	// if $runningTotal == 1, we need initial expansion
 	// if it's inbetween 2 and 6, we need to expand
-	if($runningTotal == 1 || ($runningTotal > 3 && $runningTotal < 6) ) {
+	if($runningTotal == 1 || ($runningTotal > 3 && $runningTotal < 5) ) {
 		if(expandCheck()) {
 			if(expandCheck()) {
 				$world[$x-1][$y-1]=1;
@@ -325,16 +325,16 @@ function drawMap($dataArray) {
 		$GLOBALS['iterCount']=0;
 		// set width and height from incoming size
 		if($dataArray['size']=="small") {
-			$width = $height = mt_rand(14,25);
+			$width = $height = mt_rand(9,20);
 		}
 		elseif($dataArray['size']=="medium") {
-			$width = $height = mt_rand(35,50);
+			$width = $height = mt_rand(20,30);
 		}
 		elseif($dataArray['size']=="large") {
-			$width = $height = mt_rand(60,75);
+			$width = $height = mt_rand(30,40);
 		}
 		else {
-			$width = $height = mt_rand(70,90);
+			$width = $height = mt_rand(40,50);
 		}
 		// let's create!
 		$world = createMap($width,$height);

@@ -33,9 +33,9 @@ if (!isset($_SESSION)) {
 
 }
 ?>
-</head>               
+</head>           
 <body>
-	<?php if(empty($_POST)): ?>
+	<?php if(empty($_POST)): ?>    
 		<div class="container">
 			<h1>World Generator</h1>
 			<form class="form" action="cellular.php" method="post">
@@ -68,7 +68,7 @@ if (!isset($_SESSION)) {
 					?>
 				</select> 
 				<br />
-				<input class="submit" type="submit" value="Send" /> 
+				<input class="submit" type="submit" value="Create" /> 
 			</form>
 		</div>
 	<?php else: ?>
@@ -97,37 +97,7 @@ if (!isset($_SESSION)) {
 				});
 			});
 		});
-		$('.mountain').click(function(e) {
-			$('.loading').show('slow',function(){
-				$.ajax({ 
-					url: 'cellular.php?type=1',
-					success: function() {
-						$('.loading').hide();
-					}
-				});
-			});
-		});
-		$('.grass').click(function(e) {
-			$('.loading').show('slow',function(){
-				$.ajax({ 
-					url: 'cellular.php?type=1',
-					success: function() {
-						$('.loading').hide();
-					}
-				});
-			});
-		});
 		$('.water').click(function(e) {
-			$('.loading').show('slow',function(){
-				$.ajax({ 
-					url: 'cellular.php?type=0',
-					success: function() {
-						$('.loading').hide();
-					}
-				});
-			});
-		});
-		$('.deep-water').click(function(e) {
 			$('.loading').show('slow',function(){
 				$.ajax({ 
 					url: 'cellular.php?type=0',

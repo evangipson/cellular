@@ -153,7 +153,7 @@ function drown($x,$y,&$world) {
 				}
 			}
 		}
-		if($runningTotal >= 22) {
+		if($runningTotal >= 23) {
 			//debug_to_console('Made a mountain!');
 			// set our max to 3
 			if($world[$x][$y]<3) {
@@ -321,36 +321,27 @@ function createMap($width,$height,$type = -1) {
 	return $world;
 }
 function drawMap($dataArray) {
-	
-	if($world==null) {
-		// debug
-		// gotta set up our incoming data!
-		$GLOBALS['islandChance']=$dataArray['island'];
-		$GLOBALS['expandChance']=$dataArray['expand'];
-		$GLOBALS['iter']=mt_rand(150,250);
-		$GLOBALS['vision']=$dataArray['vision'];
-		$GLOBALS['iterCount']=0;
-		// set width and height from incoming size
-		if($dataArray['size']=="small") {
-			$width = $height = mt_rand(9,20);
-		}
-		elseif($dataArray['size']=="medium") {
-			$width = $height = mt_rand(20,30);
-		}
-		elseif($dataArray['size']=="large") {
-			$width = $height = mt_rand(30,40);
-		}
-		else {
-			$width = $height = mt_rand(40,50);
-		}
-		// let's create!
-		$world = createMap($width,$height);
+	// gotta set up our incoming data!
+	$GLOBALS['islandChance']=$dataArray['island'];
+	$GLOBALS['expandChance']=$dataArray['expand'];
+	$GLOBALS['iter']=mt_rand(150,250);
+	$GLOBALS['vision']=$dataArray['vision'];
+	$GLOBALS['iterCount']=0;
+	// set width and height from incoming size
+	if($dataArray['size']=="small") {
+		$width = $height = mt_rand(9,20);
+	}
+	elseif($dataArray['size']=="medium") {
+		$width = $height = mt_rand(20,30);
+	}
+	elseif($dataArray['size']=="large") {
+		$width = $height = mt_rand(30,40);
 	}
 	else {
-		$world = createMap($width,$height,$worldValue);
+		$width = $height = mt_rand(40,50);
 	}
-	// put the map inside of a conatiner
-	echo '<div class="container">';
+	// let's create!
+	$world = createMap($width,$height);
 	// this will be silly, to animate
 	$animCounter = 0;
 	// go through map
@@ -387,8 +378,6 @@ function drawMap($dataArray) {
 			$animCounter++;
 		}
 	}
-	//end the container div
-	echo '</div>';
 }
 
 

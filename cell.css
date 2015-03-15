@@ -8,6 +8,7 @@ body, html, div {
 body {
     height: 100%;
     width: 100%;
+	background:#1976D2;
 }
 
 html {
@@ -22,7 +23,7 @@ html {
 	/*border: #DDD solid 1px;*/
 	overflow: auto;
 }
-.container {
+.world-container {
 	width:100%;
 	height:100%;
 	position:relative;
@@ -136,6 +137,8 @@ small {
 	/*padding: 0 0 0 5em;*/
 	padding: 0 0 0 0px;
 	color:#999;
+	margin-bottom: 2em;
+
 }
    option {
 	font-family: 'Open Sans', sans-serif;
@@ -147,12 +150,12 @@ small {
 .submit input { 
     width: 70%; 
     padding: 9px 15px; 
-    background: #617798; 
+    background: #1976D2; 
 	font-weight: 100;
 	font-family: 'Open Sans', sans-serif;
     border: 0; 
     font-size: 1.2em; 
-    color: #FFFFFF; 
+    color: #FCFCFC; 
 	text-align:center;
 	position:relative;
 	margin-top:1em;
@@ -162,9 +165,11 @@ small {
 }
 
 .form {
-	width:50%;
-	margin-left:auto;
-	margin-right:auto;
+	  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  background: #FCFCFC;
+  padding: 5%;
 	display:block;
 	text-align:center;
 }

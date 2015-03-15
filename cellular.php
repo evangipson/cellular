@@ -82,7 +82,7 @@ if (!isset($_SESSION)) {
 	<script type="text/javascript">
 		
       $(document).ready(function(){
-		//$('.square').addClass('animated bounceIn');
+		$('.square').addClass('animated bounceIn');
 		$('.square').show();
 		$('.square').click(function() {
 			window.location = "cellular.php";

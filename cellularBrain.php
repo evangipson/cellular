@@ -160,6 +160,13 @@ function drown($x,$y,&$world) {
 				$world[$x][$y]++;
 			}
 		}
+		elseif($runningTotal >= 18) {
+			//debug_to_console('Made a mountain!');
+			// set our max to 3
+			if($world[$x][$y]<2) {
+				$world[$x][$y]++;
+			}
+		}
 		elseif($runningTotal < 6) {
 		    $world[$x][$y]=0;
 		}

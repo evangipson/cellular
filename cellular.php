@@ -11,6 +11,9 @@
 <?php 
 // ingredients, functions, variables
 include 'cellularBrain.php';
+// uh ohhhhhh
+set_time_limit(0);
+ignore_user_abort(1);
 // we need to start the session
 // in order to make sure the variables
 // are there when we refresh.
@@ -39,10 +42,10 @@ if (!isset($_SESSION)) {
 		<div class="container">
 			<h1>World Generator</h1>
 			<form class="form" action="cellular.php" method="post">
-				<p>
+				<!-- <p>
 					<label for="island"><small>base land masses (1-20) </small></label>
 					<input type="text" name="island" id="island" value="4" /> 
-				</p>
+				</p> -->
 				<p>
 					<label for="island"><small>land expansion % (50-90%) </small></label>
 					<input type="text" name="expand" id="expand" value="70" /> 
@@ -82,22 +85,19 @@ if (!isset($_SESSION)) {
 	<script type="text/javascript">
 		
       $(document).ready(function(){
-		$('.square').addClass('animated bounceIn');
+		/*$('.square').addClass('animated fadeIn');*/
 		$('.square').show();
 		$('.square').click(function() {
 			window.location = "cellular.php";
 		});
-		/*$('.island').click(function(e) {
-			$('.loading').show('slow',function(){
-				$.ajax({ 
-					url: 'cellular.php?type=3',
-					success: function() {
-						$('.loading').hide();
-					}
-				});
+		/*$('.square').click(function(e) {
+			$.ajax({ 
+				url: 'cellular.php?type=3',
+				success: function() {
+				}
 			});
-		});
-		$('.water').click(function(e) {
+		});*/
+		/*$('.water').click(function(e) {
 			$('.loading').show('slow',function(){
 				$.ajax({ 
 					url: 'cellular.php?type=0',

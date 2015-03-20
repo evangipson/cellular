@@ -181,23 +181,33 @@ small {
 	float:left;
 	position:relative;
 }
-.island {
-	background:#4caf50;
+.city {
+	background:#FFC107;
+	/*background:#616161;*/
 }
 .mountain {
 	background:#2e7d32;
+	/*background:#757575;*/
 }
 .grass {
 	background:#388e3c;
+	/*background:#9E9E9E;*/
+}
+.island {
+	background:#4caf50;
+	/*background:#BDBDBD;*/
 }
 .water {
 	background:#2196f3;
+	/*background:#E0E0E0;*/
 }
 .deep-water {
 	background:#1976d2;
+	/*background:#EEEEEE;*/
 }
-.city {
-	background:#F1F8E9;
+.abyss {
+	background:#1565C0;
+	/*background:#FAFAFA;*/
 }
 .square:hover {
 }

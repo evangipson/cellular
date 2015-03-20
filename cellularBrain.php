@@ -11,7 +11,7 @@ function debug_to_console( $data ) {
 }
 
 function padCheck($x,$y,$width,$height) {
-	$pad = floor($width/50)<=1 ? 2 : floor($width/50);//mt_rand(3,6);
+	$pad = floor($width/mt_rand(8,25))<=1 ? 3 : floor($width/mt_rand(8,25));//mt_rand(3,6);
 	if(($x>$pad && $x<($width-$pad))&&($y>$pad && $y<($height-$pad))) {
 		return true;
 	}
@@ -37,7 +37,9 @@ function expandCheck() {
 	return false;
 }
 
-function cellExpand($width,$height,$x,$y,&$world) {
+function cellExpand($width,$height,$x,$y) {
+	// pull in the global world for editing
+	$world = $GLOBALS['world'];
 	if(padCheck($x,$y,$width,$height)==false) {
 		return 0;
 	}
@@ -68,280 +70,252 @@ function cellExpand($width,$height,$x,$y,&$world) {
 	}
 	// if $runningTotal == 1, we need initial expansion
 	// if it's inbetween 2 and 6, we need to expand
-	if($runningTotal == 1 || ($runningTotal > 3 && $runningTotal < 5) ) {
-		if(expandCheck()) {
-			if(expandCheck()) {
-				$world[$x-1][$y-1]=1;
-			}
-			if(expandCheck()) {
-				$world[$x][$y-1]=1;
-			}
-			if(expandCheck()) {
-				$world[$x+1][$y-1]=1;
-			}
-			if(expandCheck()) {
-				$world[$x-1][$y]=1;
-			}
-			if(expandCheck()) {
-				$world[$x+1][$y]=1;
-			}
-			if(expandCheck()) {
-				$world[$x-1][$y+1]=1;
-			}
-			if(expandCheck()) {
-				$world[$x][$y+1]=1;
-			}
-			if(expandCheck()) {
-				$world[$x+1][$y+1]=1;
-			}
-		}
-		else {
-		    
+	if($runningTotal == 1 || ($runningTotal > 4 && $runningTotal < 6 )) {
+	    if(expandCheck()) {
 		    $world[$x-1][$y-1]=1;
+	    }
+	    if(expandCheck()) {
 		    $world[$x][$y-1]=1;
+	    }
+	    if(expandCheck()) {
 		    $world[$x+1][$y-1]=1;
+	    }
+	    if(expandCheck()) {
 		    $world[$x-1][$y]=1;
+	    }
+	    if(expandCheck()) {
 		    $world[$x+1][$y]=1;
+	    }
+	    if(expandCheck()) {
 		    $world[$x-1][$y+1]=1;
+	    }
+	    if(expandCheck()) {
 		    $world[$x][$y+1]=1;
+	    }
+	    if(expandCheck()) {
 		    $world[$x+1][$y+1]=1;
-		}
+	    }
 	}
+	// set the global to the modified world
+	$GLOBALS['world'] = $world;
 }
-function drown($x,$y,&$world) {
+function drown($x,$y) {
+	// pull in the global world for editing
+	$world = $GLOBALS['world'];
 	$runningTotal=0;
 	//$theCheck = $world[$x][$y];
 	if($world[$x][$y]<=0) {
-		$theCheck=1;
-		if($world[$x-1][$y-1]>=$theCheck) {
-			$runningTotal += 1;
+		$theCheck=0;
+		for($i=-2;$i<=2;$i++) {
+		    for($r=-2;$r<=2;$r++) {
+			if(isset($world[$x+$i][$y+$r]) && $world[$x+$i][$y+$r]<=$theCheck) {
+			    $runningTotal += 1;
+			}
+			// we have to make the edge of the map
+			// count toward drowning goals
+			elseif(!isset($world[$x+$i][$y+$r])) {
+			    $runningTotal += 1;
+			}
+		    }
 		}
-		if($world[$x][$y-1]>=$theCheck) {
-			$runningTotal += 1;
-		}
-		if($world[$x+1][$y-1]>=$theCheck) {
-			$runningTotal += 1;
-		}
-		if($world[$x-1][$y]>=$theCheck) {
-			$runningTotal += 1;
-		}
-		if($world[$x+1][$y]>=$theCheck) {
-			$runningTotal += 1;
-		}
-		if($world[$x-1][$y+1]>=$theCheck) {
-			$runningTotal += 1;
-		}
-		if($world[$x][$y+1]>=$theCheck) {
-			$runningTotal += 1;
-		}
-		if($world[$x+1][$y+1]>=$theCheck) {
-			$runningTotal += 1;
-		}
-		if($runningTotal >= 7) {
+		if($runningTotal < mt_rand(13,15)) {
 			$world[$x][$y]=1;
 		}
-		elseif($runningTotal < 1) {
-		    $world[$x][$y]=-1;
+		if($runningTotal >= 25) {
+		    if($world[$x][$y]>-2) {
+			$world[$x][$y]--;
+		    }
+		}
+		elseif($runningTotal >= 20) {
+		    if($world[$x][$y]>-1) {
+			$world[$x][$y]--;
+		    }
 		}
 	}
 	else {
 		$theCheck=1;
 		for($i=-2;$i<=2;$i++) {
 			for($r=-2;$r<=2;$r++) {
-				if($world[$x+$i][$y+$r]>=$theCheck) {
+				if(isset($world[$x+$i][$y+$r]) && $world[$x+$i][$y+$r]>=$theCheck) {
 					$runningTotal++;
 				}
 			}
 		}
-		if($runningTotal >= 23) {
+		if($runningTotal >= 24) {
 			//debug_to_console('Made a mountain!');
 			// set our max to 3
 			if($world[$x][$y]<3) {
 				$world[$x][$y]++;
 			}
 		}
-		elseif($runningTotal >= 18) {
+		elseif($runningTotal >= 19) {
 			//debug_to_console('Made a mountain!');
 			// set our max to 3
 			if($world[$x][$y]<2) {
 				$world[$x][$y]++;
 			}
 		}
-		elseif($runningTotal < 6) {
+		// "sticky" land variable
+		elseif($runningTotal <= 12) {
 		    $world[$x][$y]=0;
 		}
 	}
+	// set the global to the modified world
+	$GLOBALS['world'] = $world;
 	//debug_to_console("runningTotal: ".$runningTotal);
 	/*debug_to_console("evaluating: ".($world[$x][$y]>0?"land":"water"));*/
 }
-//a more general expansion approach
-function recExpand($width,$height,&$world) {
+// a more general expansion approach
+function recExpand($width,$height) {
 	// adding an element of randomness
 	// with the weird for loops
 	$xIter = $yIter = array();
-	for ($x=1;$x<$width-1;$x++)  {
+	for ($x=0;$x<$width;$x++)  {
 		$xIter[$x]=$x;
 		$yIter[$x]=$x;
 	}
-	for($x=1;$x<$width-1;$x++) {
-		$randomSelect = mt_rand(1,count($xIter));
-		$newX = $xIter[$randomSelect];
-		array_splice($xIter,$randomSelect,1);
-		for($y=1;$y<$height-1;$y++) {
-			$randomSelect = mt_rand(1,count($yIter));
-			$newY = $yIter[$randomSelect];
-			array_splice($yIter,$randomSelect,1);
-			if($world[$newX][$newY]==1) {
-				cellExpand($width,$height,$newX,$newY,$world);
+	for($x=0;$x<$width;$x++) {
+		$newX = $xIter[mt_rand(0,count($xIter)-1)];
+		array_splice($xIter,$newX,1);
+		for($y=0;$y<$height;$y++) {
+			$newY = $yIter[mt_rand(0,count($yIter)-1)];
+			array_splice($yIter,$newY,1);
+			// we need to peek at our world array
+			// for JUST a second and only IF our
+			// conditions are met.
+			if($GLOBALS['world'][$newX][$newY]==1) {
+				cellExpand($width,$height,$newX,$newY);
 			}
 		}
 	}
 }
 //a function for biome introduction
-function biomeInjection($width,$height,&$world) {
+function biomeInjection($width,$height) {
 	// pull in global variable set upon load
 	$visionDist = $GLOBALS['vision'];
+	// pull in the global world for editing
+	$world = $GLOBALS['world'];
 	// get some variables about for loop limits
 	// before we execute them to save execution time
 	$xLimit = $width-$visionDist;
 	$yLimit = $height-$visionDist;
+	// let's get our number we're going to test against
+	$landTest = 0;
+	for($i=1;$i<=$visionDist;$i++) {
+	    $landTest += $i * 8;
+	}
 	// agent-based evaluation
 	// evaluate tiles far away
 	// and get aggregate, handle accordingly
-	/*for($x=$visionDist;$x<$xLimit;$x++) {
-		for($y=$visionDist;$y<$yLimit;$y++) {
-			// we only care about land for this chunk
-			if($world[$x][$y]>=2) {
-			
-				$runningTotal = 0;
-				
-				for($widthVision=-$visionDist;$widthVision<$visionDist;$widthVision++) {
-					// have to test for 1, and everything
-					// above 1 as well, since we are "post-drown"
-					for($heightVision=-$visionDist;$heightVision<$visionDist;$heightVision++) {
-						$GLOBALS['iterCount']++;
-						if($world[$x+$widthVision][$y+$heightVision]>=2) {
-							if($runningTotal>=($visionDist*9)) {
-								break;
-							}
-							$runningTotal++;
-						}
-					}
-					if($runningTotal>=($visionDist*9)) {
-						break;
-					}
-				}
-				if($runningTotal>=(9*$visionDist)) {
-					//debug_to_console('we have a city!  this somehow worked.');
-					$world[$x][$y]=4;
-				}
+	for($x=$visionDist;$x<$xLimit;$x++) {
+	    for($y=$visionDist;$y<$yLimit;$y++) {
+		// we only care about land for this chunk
+		if($world[$x][$y]>=2) {
+		
+		    $runningTotal = 0;
+		    
+		    for($widthVision=-$visionDist;$widthVision<=$visionDist;$widthVision++) {
+			// have to test for 1, and everything
+			// above 1 as well, since we are "post-drown"
+			for($heightVision=-$visionDist;$heightVision<=$visionDist;$heightVision++) {
+			    $GLOBALS['iterCount']++;
+			    if($world[$x+$widthVision][$y+$heightVision]>=2) {
+				    $runningTotal++;
+			    }
 			}
+		    }
+		    // if we had land tiles surrounding this thing
+		    // COMPLETELY for our entire vision....
+		    if($runningTotal>=$landTest) {
+			    //debug_to_console('we have a city!  this somehow worked.');
+			    $world[$x][$y]=4;
+		    }
 		}
-	}*/
+	    }
+	}
+	// set the global to the modified world
+	$GLOBALS['world'] = $world;
 }
 //a final expansion function
-function finalExpand($width,$height,&$world) {
+function finalExpand($width,$height) {
 	// we'll drown a few times
-	for($i=0;$i<3;$i++) {
-		// adding an element of randomness
-		// with the weird for loops
-		/*$xIter = array();
-		$yIter = array();
-		for ($x=0;$x<$width;$x++)  {
-			$xIter[$x]=$x;
-			$yIter[$x]=$x;
-		}
-		for($x=0;$x<$width;$x++) {
-			$newX = $xIter[mt_rand(0,count($xIter))];
-			array_splice($xIter,$newX,1);
-			for($y=0;$y<$height;$y++) {
-				$newY = $yIter[mt_rand(0,count($yIter))];
-				array_splice($yIter,$newY,1);
-				$theDebugString = 'drowning tile: ('.$newX.','.$newY.'), and it is: '.$world[$newX][$newY].'.';
-				debug_to_console($theDebugString);
-				drown($newX,$newY,$world);
-			}
-		}*/
+	for($i=0;$i<2;$i++) {
 		for($x=0;$x<$width;$x++) {
 			for($y=0;$y<$height;$y++) {
-				drown($x,$y,$world);
+			    drown($x,$y);
 			}
 		}
 	}
-	biomeInjection($width,$height,$world);
-	debug_to_console('the loop ran: '.$GLOBALS['iterCount'].' times.');
+	// need to re-drown land one last pass
+	// for foresting issues
+	for($x=0;$x<$width;$x++) {
+		for($y=0;$y<$height;$y++) {
+		    //if($GLOBALS['world'][$x][$y]==1) {
+			drown($x,$y);
+		    //}
+		}
+	}
+	biomeInjection($width,$height);
+	//debug_to_console('the loop ran: '.$GLOBALS['iterCount'].' times.');
 }
-function createMap($width,$height,$type = -1) {
+// we are messing with the world global array here,
+// as well as the iter global.  this is such a global
+// function.  :-D
+function createMap($width,$height) {
 	// clean slate, a new world!
-	$world = array();
-	// if our type is -1, we are generating
+	$GLOBALS['world'] = array();
+	// we are generating
 	// a fresh map
-	if($type==-1) {
-		// plant seeds
-		for($x=0;$x<$width;$x++) {
-			$world[$x] = array();
-			for($y=0;$y<$height;$y++) { 
-				//random roll
-				if(padCheck($x,$y,$width,$height)==true && islandCheck()==true) {
-					//we have an island if it passes!
-					$world[$x][$y]=1;
-				}
-				else {
-					//just some water
-					$world[$x][$y]=0;
-				}
+	for($x=0;$x<$width;$x++) {
+		$GLOBALS['world'][$x] = array();
+		for($y=0;$y<$height;$y++) { 
+			//random roll
+			if(padCheck($x,$y,$width,$height)==true && islandCheck()==true) {
+				//we have an island if it passes!
+				$GLOBALS['world'][$x][$y]=1;
+			}
+			else {
+				//just some water
+				$GLOBALS['world'][$x][$y]=0;
 			}
 		}
-		// additional iterations
-		for($iterator=0;$iterator<$GLOBALS['iter'];$iterator++) {
-			recExpand($width,$height,$world);
-		}
-		finalExpand($width,$height,$world);
 	}
-	// otherwise, we are going to be generating
-	// a section of the already living map
-	else {
-		// it was land!
-		if($type>=1) {
-			// plant seeds
-			for($x=0;$x<$width;$x++) {
-				echo '<div style="clear:both"></div>';
-				$world[$x] = array();
-				for($y=0;$y<$height;$y++) { 
-					// random grass tile
-					$world[$x][$y] = mt_rand(1,100)>66 ? 1 : mt_rand(1,100)>33 ? 2 : 3 ;
-				}
-			}
-		}
-		//it was water
-		else {
-			$world[$x][$y] = 0;
-		}
+	// additional iterations
+	for($iterator=0;$iterator<$GLOBALS['iter'];$iterator++) {
+		recExpand($width,$height);
 	}
-	return $world;
+	finalExpand($width,$height);
 }
 function drawMap($dataArray) {
 	// gotta set up our incoming data!
-	$GLOBALS['islandChance']=$dataArray['island'];
+	$GLOBALS['islandChance']=5;//$dataArray['island'];
 	$GLOBALS['expandChance']=$dataArray['expand'];
-	$GLOBALS['iter']=mt_rand(150,250);
-	$GLOBALS['vision']=$dataArray['vision'];
+	$GLOBALS['iter']=250;
+	$GLOBALS['vision']=4;//$dataArray['vision'];
 	$GLOBALS['iterCount']=0;
+	// let's pull in the size to a global variable.
+	$GLOBALS['size'] = $dataArray['size'];
 	// set width and height from incoming size
-	if($dataArray['size']=="small") {
-		$width = $height = mt_rand(9,20);
+	if($GLOBALS['size']=="small") {
+		$width = $height = mt_rand(15,30);
 	}
-	elseif($dataArray['size']=="medium") {
-		$width = $height = mt_rand(20,30);
+	elseif($GLOBALS['size']=="medium") {
+		$width = $height = mt_rand(30,60);
 	}
-	elseif($dataArray['size']=="large") {
-		$width = $height = mt_rand(30,40);
+	elseif($GLOBALS['size']=="large") {
+		$width = $height = mt_rand(60,100);
 	}
+	// extra large
 	else {
-		$width = $height = mt_rand(40,50);
+		//$GLOBALS['islandChance']= 15;
+		$width = $height = mt_rand(180,220);;//mt_rand(170,190);
+		$GLOBALS['iter']= mt_rand(400,700);
+		$GLOBALS['vision'] = 6;
 	}
-	// let's create!
-	$world = createMap($width,$height);
+	// let's create! (we're assuming that $GLOBALS['world'] lives
+	// after this function is called)
+	// $GLOBALS['world'] = createMap($width,$height);
+	createMap($width,$height);
 	// this will be silly, to animate
 	$animCounter = 0;
 	// go through map
@@ -349,30 +323,35 @@ function drawMap($dataArray) {
 		echo '<div style="clear:both"></div>';
 		for($y=0;$y<$height;$y++) { 
 			// calculate animation
+			// in milliseconds
 			$animTime = $animCounter/1000;
 			// city
-			if($world[$x][$y]==4) {
+			if($GLOBALS['world'][$x][$y]==4) {
 				echo "<div style='width:".(100/$width)."vw;height:".(100/$height)."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square city'></div>";
 			}
 			// mountain
-			elseif($world[$x][$y]==3) {
+			elseif($GLOBALS['world'][$x][$y]==3) {
 				echo "<div style='width:".(100/$width)."vw;height:".(100/$height)."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square mountain'></div>";
 			}
 			// grass
-			elseif($world[$x][$y]==2) {
+			elseif($GLOBALS['world'][$x][$y]==2) {
 				echo "<div style='width:".(100/$width)."vw;height:".(100/$height)."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square grass'></div>";
 			}
 			// island
-			elseif($world[$x][$y]==1) {
+			elseif($GLOBALS['world'][$x][$y]==1) {
 				echo "<div style='width:".(100/$width)."vw;height:".(100/$height)."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square island'></div>";
 			}
 			// water
-			elseif($world[$x][$y]==0) {
+			elseif($GLOBALS['world'][$x][$y]==0) {
 				echo "<div style='width:".(100/$width)."vw;height:".(100/$height)."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square water'></div>";
 			}
 			// deep-water
-			elseif($world[$x][$y]<0) {
+			elseif($GLOBALS['world'][$x][$y]==-1) {
 				echo "<div style='width:".(100/$width)."vw;height:".(100/$height)."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square deep-water'></div>";
+			}
+			// abyss
+			elseif($GLOBALS['world'][$x][$y]<-1) {
+				echo "<div style='width:".(100/$width)."vw;height:".(100/$height)."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square abyss'></div>";
 			}
 			// increase animation counter
 			$animCounter++;

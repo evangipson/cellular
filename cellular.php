@@ -41,7 +41,7 @@ if (!isset($_SESSION)) {
 	<?php if(empty($_POST)): ?>    
 		<div class="container">
 			<h1>World Generator</h1>
-			<form class="form" action="cellular.php" method="post">
+			<form class="form" action="cellular.php?created=1" method="post">
 				<!-- <p>
 					<label for="island"><small>base land masses (1-20) </small></label>
 					<input type="text" name="island" id="island" value="4" /> 
@@ -75,10 +75,17 @@ if (!isset($_SESSION)) {
 			</form>
 		</div>
 	<?php else: ?>
-		<div class='world-container'>
-			<?php $world = drawMap($_POST); ?>
-			<?php //$world = drawMap(12,12,$_POST['type']); ?>
-		</div>
+		<?php if(isset($_GET['created']) && !isset($_GET['info'])): ?>
+			<div class='world-container'>
+				<?php drawMap($_POST); ?>
+				<?php //$world = drawMap(12,12,$_POST['type']); ?>
+			</div>
+		<?php elseif(isset($_GET['info'])): ?>
+			<div class='world-container'>
+				<?php finalExpand(); ?>
+				<?php //$world = drawMap(12,12,$_POST['type']); ?>
+			</div>
+		<?php endif; ?>
 	<?php endif; ?>
 	<div class='loading'>Loading...</div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
@@ -88,7 +95,7 @@ if (!isset($_SESSION)) {
 		/*$('.square').addClass('animated fadeIn');*/
 		$('.square').show();
 		$('.square').click(function() {
-			window.location = "cellular.php";
+			window.location = "cellular.php?info=1";
 		});
 		/*$('.square').click(function(e) {
 			$.ajax({ 

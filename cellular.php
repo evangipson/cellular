@@ -38,7 +38,7 @@ if (!isset($_SESSION)) {
 ?>
 </head>           
 <body>
-	<?php if(empty($_POST)): ?>    
+	<?php if(!isset($_GET['info']) && !isset($_GET['created'])): ?>    
 		<div class="container">
 			<h1>World Generator</h1>
 			<form class="form" action="cellular.php?created=1" method="post">
@@ -75,26 +75,34 @@ if (!isset($_SESSION)) {
 			</form>
 		</div>
 	<?php else: ?>
-		<?php if(isset($_GET['created']) && !isset($_GET['info'])): ?>
+		<?php if(isset($_GET['created'])): ?>
 			<div class='world-container'>
-				<?php drawMap($_POST); ?>
+				<?php $_SESSION['bigArray']=createMap($_POST); ?>
 				<?php //$world = drawMap(12,12,$_POST['type']); ?>
 			</div>
-		<?php elseif(isset($_GET['info'])): ?>
+			<div class='toolTip shadow-1'>CLICK ON MAP TO <b>EVOLVE</b></div>
+		<?php else: ?>
 			<div class='world-container'>
-				<?php finalExpand(); ?>
+				<?php $_SESSION['bigArray']=finalExpand($_SESSION['bigArray'][0],$_SESSION['bigArray'][1],$_SESSION['bigArray'][2],$_SESSION['bigArray'][3]); ?>
 				<?php //$world = drawMap(12,12,$_POST['type']); ?>
 			</div>
 		<?php endif; ?>
+		
 	<?php endif; ?>
 	<div class='loading'>Loading...</div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		
       $(document).ready(function(){
-		/*$('.square').addClass('animated fadeIn');*/
-		$('.square').show();
+		//$('.square').addClass('animated fadeIn');
+		$('.square').show().delay(1200).queue(function() {
+			$('.toolTip').addClass('animated fadeInDown');
+			$('.toolTip').show();
+		});
 		$('.square').click(function() {
+			// flush display
+			//$( ".world-container" ).empty();
+			// trigger PHP function
 			window.location = "cellular.php?info=1";
 		});
 		/*$('.square').click(function(e) {

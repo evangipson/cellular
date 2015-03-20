@@ -48,7 +48,7 @@ if (!isset($_SESSION)) {
 				</p> -->
 				<p>
 					<label for="island"><small>land expansion % (50-90%) </small></label>
-					<input type="text" name="expand" id="expand" value="70" /> 
+					<input type="text" name="expand" id="expand" value="80" /> 
 				</p>
 				<!-- <p>
 					<label for="vision"><small>vision distance (2-max 5)</small></label>

@@ -112,7 +112,7 @@ function drown($x,$y) {
 			}
 		    }
 		}
-		if($runningTotal < mt_rand(13,15)) {
+		if($runningTotal < mt_rand(9,15)) {
 			$GLOBALS['world'][$x][$y]=1;
 		}
 		if($runningTotal >= 25) {
@@ -150,7 +150,7 @@ function drown($x,$y) {
 			}
 		}
 		// "sticky" land variable
-		elseif($runningTotal <= 12) {
+		elseif($runningTotal <= 9) {
 		    $GLOBALS['world'][$x][$y]=0;
 		}
 	}
@@ -233,23 +233,9 @@ function finalExpand($world,$vision,$width,$height) {
 	$GLOBALS['vision']=$vision;
 	$GLOBALS['width']=$width;
 	$GLOBALS['height']=$height;
-	// debug
-	debug_to_console($world[0][0]);
-	// we'll drown a few times
-	for($i=0;$i<2;$i++) {
-		for($x=0;$x<$GLOBALS['width'];$x++) {
-			for($y=0;$y<$GLOBALS['height'];$y++) {
-			    drown($x,$y);
-			}
-		}
-	}
-	// need to re-drown land one last pass
-	// for foresting issues
 	for($x=0;$x<$GLOBALS['width'];$x++) {
 		for($y=0;$y<$GLOBALS['height'];$y++) {
-		    //if($GLOBALS['world'][$x][$y]==1) {
 			drown($x,$y);
-		    //}
 		}
 	}
 	// here we inject some biomes n' sich

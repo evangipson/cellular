@@ -26,27 +26,26 @@ function genWorldName() {
 	$lastSyllables = array("shi","lm","us","le","ir","lax","for","eam","im","lak");
 	// we'll generate a few names
 	$nameArray=array();
-		// we'll have 1-4 syllables.
-		$numSyllables = rand(1,4);
-		$theName = "";
-		// build then name
-		for($i=1;$i<$numSyllables;$i++) {
-			if($i==1) {
-				$theName = $firstSyllables[mt_rand(0,count($firstSyllables)-1)];
-			}
-			elseif($i==2) {
-				if($numSyllables > 2) {
-					$theName .= $secondSyllables[mt_rand(0,count($secondSyllables)-1)];
-				}
-				else {
-					$theName .= $lastSyllables[mt_rand(0,count($lastSyllables)-1)];
-				}
+	// we'll have 1-4 syllables.
+	$numSyllables = rand(1,30)>2 ? rand(2,4) : rand(1,4);
+	$theName = "";
+	// build then name
+	for($i=1;$i<$numSyllables;$i++) {
+		if($i==1) {
+			$theName = $firstSyllables[mt_rand(0,count($firstSyllables)-1)];
+		}
+		elseif($i==2) {
+			if($numSyllables > 2) {
+				$theName .= $secondSyllables[mt_rand(0,count($secondSyllables)-1)];
 			}
 			else {
-					$theName .= $lastSyllables[mt_rand(0,count($lastSyllables)-1)];
+				$theName .= $lastSyllables[mt_rand(0,count($lastSyllables)-1)];
 			}
 		}
-	
+		else {
+				$theName .= $lastSyllables[mt_rand(0,count($lastSyllables)-1)];
+		}
+	}
 	$theWorldName = "";
 	$firstWords = "The";
 	$secondWords = array("Trembling","Dim","Familiar","Mundane","Lawful","Lively","Arduous","Mammoth","Oblong","Overlooked","Tame","Somber","Silent","Secret","Scarce","Dry","Arid","Ambiguous","Wretched","Windy","Viscious","Torn");

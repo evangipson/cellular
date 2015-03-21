@@ -9,15 +9,76 @@ function debug_to_console( $data ) {
         $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
     echo $output;
 }
+// greatest common factor
+function gcf($a, $b) { 
+	return ( $b == 0 ) ? ($a):( gcf($b, $a % $b) ); 
+}
+// lowest common multiple
+function lcm($a, $b) { 
+	return ( $a / gcf($a,$b) ) * $b; 
+}
 // this function generates the world
 // names!
 function genWorldName() {
-	$theWorldName = "";
+	// set up the syllable arrays.
+	$firstSyllables = array("Mon","Fay","Shi","Gar","Bli","Tem","Scar","Qo","Tar","Mlip","Munk","Qi","Qhi","Phi","Sar","Ral","Sal","Var");
+	$secondSyllables = array("malo","zak","abo","won","al","ap","la","phe","ia","fa","ep","el","iil","yl");
+	$lastSyllables = array("shi","lm","us","le","ir","lax","for","eam","im","lak");
+	// we'll generate a few names
+	$nameArray=array();
+		// we'll have 1-4 syllables.
+		$numSyllables = rand(1,4);
+		$theName = "";
+		// build then name
+		for($i=1;$i<$numSyllables;$i++) {
+			if($i==1) {
+				$theName = $firstSyllables[mt_rand(0,count($firstSyllables)-1)];
+			}
+			elseif($i==2) {
+				if($numSyllables > 2) {
+					$theName .= $secondSyllables[mt_rand(0,count($secondSyllables)-1)];
+				}
+				else {
+					$theName .= $lastSyllables[mt_rand(0,count($lastSyllables)-1)];
+				}
+			}
+			else {
+					$theName .= $lastSyllables[mt_rand(0,count($lastSyllables)-1)];
+			}
+		}
 	
+	$theWorldName = "";
+	$firstWords = "The";
+	$secondWords = array("Trembling","Dim","Familiar","Mundane","Lawful","Lively","Arduous","Mammoth","Oblong","Overlooked","Tame","Somber","Silent","Secret","Scarce","Dry","Arid","Ambiguous","Wretched","Windy","Viscious","Torn");
+	$thirdWords = array("Plains","Scape","Dominion","Ego","Truth","Falsity","Domain","Arboretum","Aviary");
+	// 32% chance it will be a 1-word title
+	if(mt_rand(1,100)<33) {
+		// we are a 1-word title
+		$theWorldName .= $theName;
+	}
+	// 68% chance it will be a 2 or 3 word title
+	else {
+		// 50% chance it will be a 2 word title
+		if(mt_rand(1,100)<50) {
+			// we are a 2-word title
+			if(mt_rand(1,100)<70) {
+				$theWorldName .= $firstWords.' '.$secondWords[mt_rand(0,count($secondWords)-1)];
+			}
+			// we could have a made up name too
+			else {
+				$theWorldName .= $theName;
+			}
+		}
+		// 50% chance it will be a 3 word title
+		else {
+			$theWorldName .= $firstWords.' '.$secondWords[mt_rand(0,count($secondWords)-1)].' '.$thirdWords[mt_rand(0,count($thirdWords)-1)];
+		}
+		
+	}
 	return $theWorldName;
 }
 function padCheck($x,$y) {
-	$pad = floor($GLOBALS['width']/mt_rand(8,25))<=1 ? 3 : floor($GLOBALS['width']/mt_rand(8,25));//mt_rand(3,6);
+	$pad = floor($GLOBALS['width']/mt_rand(8,25))<=3 ? 3 : floor($GLOBALS['width']/mt_rand(8,25));//mt_rand(3,6);
 	if(($x>$pad && $x<($GLOBALS['width']-$pad))&&($y>$pad && $y<($GLOBALS['height']-$pad))) {
 		return true;
 	}

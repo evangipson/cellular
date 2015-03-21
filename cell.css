@@ -78,12 +78,12 @@ left:0;
 transition: all 0.3s ease;
 }
 .stickyPanel p{
-padding:5%!important;
+padding:4%!important;
 display:inline-block;
 font-size:1.3em;
 color:#FCFCFC;
 letter-spacing:2px;
-width:35%;
+width:39%;
 margin:0!important;
 font-family:'Open Sans',sans-serif;
 font-weight:100;	
@@ -94,6 +94,9 @@ transition: all 0.6s ease;
 }
 .closer, .refreshy {
 	margin-top:1.3em;
+}
+.closer {
+	margin-bottom:1.3em;
 }
 .stickyPanel p.list{
 	float:left;
@@ -362,11 +365,22 @@ small {
 	.submit input, select, input, textarea {
 		width:90%;
 	}
+	.stickyPanel {
+		width:18em;
+	}
+	p.list, p.data {
+		font-size:0.8em;
+		letter-spacing:1px;
+	}
+	input {
+		font-size:0.8em;
+		letter-spacing:1px;
+	}
 }
 
 
-/* animate */
-@charset "UTF-8";
+/* animate 
+@charset "UTF-8";*/
 
 /*!
 Animate.css - http://daneden.me/animate

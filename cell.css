@@ -92,7 +92,7 @@ font-weight:100;
 -o-transition: all 0.6s ease;
 transition: all 0.6s ease;
 }
-.closer {
+.closer, .refreshy {
 	margin-top:1.3em;
 }
 .stickyPanel p.list{
@@ -137,7 +137,8 @@ input, textarea {
 	font-weight: 100;
 	font-family: 'Open Sans', sans-serif;
     width: 70%; 
-    background: #FFFFFF; 
+    background: rgba(252,252,252,0.15); 
+    color:#FCFCFC; 
 	text-align:center;
 } 
    
@@ -151,6 +152,8 @@ textarea {
 input:hover, textarea:hover, 
 input:focus, textarea:focus { 
     border-color: #C9C9C9; 
+    background: rgba(252,252,252,0.95); 
+    color:#121212; 
     } 
 select {
 	width:70%;

@@ -53,7 +53,7 @@ if (!isset($_SESSION)) {
 				</p> -->
 				<p>
 					<label for="island"><small>land expansion % (50-90%) </small></label>
-					<input type="text" name="expand" id="expand" value="80" /> 
+					<input type="text" style="color:#121212;" name="expand" id="expand" value="80" /> 
 				</p>
 				<!-- <p>
 					<label for="vision"><small>vision distance (2-max 5)</small></label>
@@ -76,7 +76,7 @@ if (!isset($_SESSION)) {
 					?>
 				</select> 
 				<br />
-				<input class="submit" type="submit" value="Create" /> 
+				<input class="submit" style="color:#121212;" type="submit" value="Create" /> 
 			</form>
 		</div>
 	<?php else: ?>
@@ -140,11 +140,14 @@ if (!isset($_SESSION)) {
 						$_SESSION['min']=$min;
 					?>
 					<p class="data"><?php echo $_SESSION['min']; ?></p>
-					<?php $theTempEvo =  $_SESSION['evolveId']+1; ?>
-					<form action="cellular.php?evolve=<?php echo $theTempEvo; ?>" method="post">	
-						<input class='submit' type="submit" value="Evolve Map Data" name="mapdata"><br /> 
-					</form>
 				<?php endif; ?>
+				<?php $theTempEvo =  $_SESSION['evolveId']+1; ?>
+				<form action="cellular.php?evolve=<?php echo $theTempEvo; ?>" method="post">	
+					<input class='submit' style="margin-top:1.3em;" type="submit" value="Evolve Map Data" name="mapdata"><br /> 
+				</form>
+				<form action="cellular.php" method="post">	
+					<input class='submit refreshy' type="submit" value="Create New Map" name="mapdata"><br /> 
+				</form>
 				<input class='submit closer' type="submit" value="Close" name="close"><br /> 
 			</p>
 		</div>
@@ -157,10 +160,7 @@ if (!isset($_SESSION)) {
 		//$('.square').addClass('animated fadeIn');
 		$('.square').show().delay(300).queue(function() {
 			$('.stickyMenu').addClass('animated bounceInUp');
-			$('.stickyMenu').show().delay(700).queue(function() {
-				$('.toolTip').addClass('animated fadeInDown');
-				$('.toolTip').show();
-			});
+			$('.stickyMenu').show();
 		});
 		$('.stickyMenu').click(function() {
 			$('.stickyMenu').removeClass('bounceInLeft');
@@ -178,14 +178,17 @@ if (!isset($_SESSION)) {
 			$('.stickyMenu').addClass('animated bounceInLeft');
 			$('.stickyMenu').show();
 		});
-		$('.square').click(function() {
+		/*$('.refreshy').click(function() {
+			window.location = "cellular.php";
+		});*/
+		//$('.square').click(function() {
 			// pull in session evolveId
-			var evolveId = "<?php echo $_SESSION['evolveId']+1; ?>";
+			//var evolveId = "<?php echo $_SESSION['evolveId']+1; ?>";
 			// flush display
 			//$( ".world-container" ).empty();
 			// trigger PHP function
-			window.location = "cellular.php?evolve="+evolveId;
-		});
+			//window.location = "cellular.php?evolve="+evolveId;
+		//});
 		/*$('.square').click(function(e) {
 			$.ajax({ 
 				url: 'cellular.php?type=3',

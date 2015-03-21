@@ -30,14 +30,94 @@ html {
 	margin:1em!important;
 	padding:1.3em!important;
 	top:0;
-	left:50%;
-	margin-left:-10em!important;
-	width:20em;
+	left:0;
+	width:100%;
+	padding:0!important;
+	margin:0!important;
+	font-size:1.1em;
 	height:1.4em;
 	font-weight:100;
 	background:rgba(252,252,252,0.8);
 	color:#121212;
 	font-family:"Open Sans",sans-serif;
+}
+.stickyMenu {
+position:fixed;
+display:none;
+padding:0!important;
+margin:0!important;
+border-radius:50%;
+background:rgba(252,252,252,0.85);
+text-align:center;
+bottom:5vh;
+left:5vw;
+-webkit-transition: all 0.3s ease;
+-moz-transition: all 0.3s ease;
+-o-transition: all 0.3s ease;
+transition: all 0.3s ease;
+}
+.stickyMenu i{
+padding:0.4em;
+-webkit-transition: all 0.5s ease;
+-moz-transition: all 0.5s ease;
+-o-transition: all 0.5s ease;
+transition: all 0.5s ease;
+}
+.stickyPanel {
+position:fixed;
+display:none;
+background:rgba(12,12,12,0.85);
+text-align:center;
+font-size:0.8em;
+bottom:3vh;
+width:30em;
+left:0;
+-webkit-transition: all 0.3s ease;
+-moz-transition: all 0.3s ease;
+-o-transition: all 0.3s ease;
+transition: all 0.3s ease;
+}
+.stickyPanel p{
+padding:5%!important;
+display:inline-block;
+font-size:1.3em;
+color:#FCFCFC;
+letter-spacing:2px;
+width:35%;
+margin:0!important;
+font-family:'Open Sans',sans-serif;
+font-weight:100;	
+-webkit-transition: all 0.6s ease;
+-moz-transition: all 0.6s ease;
+-o-transition: all 0.6s ease;
+transition: all 0.6s ease;
+}
+.closer {
+	margin-top:1.3em;
+}
+.stickyPanel p.list{
+	float:left;
+	text-transform:uppercase;
+	padding-left:2em;
+	text-align:right;
+}
+.stickyPanel p.data{
+	float:right;
+	text-align:left;
+	padding-right:2em;
+font-family:'Open Sans',sans-serif;
+font-weight:600;	
+}
+.stickyMenu:hover {
+cursor:pointer;
+background:#121212;
+}
+.stickyMenu i:hover {
+color:#FCFCFC;
+-moz-transform: rotate(180deg);
+-webkit-transform: rotate(180deg);
+-o-transform: rotate(180deg);
+transform: rotate(180deg);
 }
 .world-container {
 	width:100%;
@@ -224,6 +304,36 @@ small {
 .abyss {
 	background:#1565C0;
 	/*background:#FAFAFA;*/
+}
+.super-dark  {
+	background:#616161!important;
+	color:#FCFCFC!important;
+}
+.very-dark {
+	background:#757575!important;
+	color:#FCFCFC!important;
+}
+.dark {
+	background:#9E9E9E!important;
+	color:#FCFCFC!important;
+}
+.normal { 
+	background:#BDBDBD!important;
+}
+.bright {
+	background:#E0E0E0!important;
+}
+.kinda-bright {
+	background:#EEEEEE!important;
+}
+.whitey {
+	background:#FAFAFA!important;
+}
+.number {
+	font-weight:bold;
+	font-family:'Open Sans',sans-serif;
+	font-size:0.6em;
+	text-align:center;
 }
 .square:hover {
 }

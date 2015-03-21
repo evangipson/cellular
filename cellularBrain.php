@@ -9,7 +9,13 @@ function debug_to_console( $data ) {
         $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
     echo $output;
 }
-
+// this function generates the world
+// names!
+function genWorldName() {
+	$theWorldName = "";
+	
+	return $theWorldName;
+}
 function padCheck($x,$y) {
 	$pad = floor($GLOBALS['width']/mt_rand(8,25))<=1 ? 3 : floor($GLOBALS['width']/mt_rand(8,25));//mt_rand(3,6);
 	if(($x>$pad && $x<($GLOBALS['width']-$pad))&&($y>$pad && $y<($GLOBALS['height']-$pad))) {
@@ -150,7 +156,7 @@ function drown($x,$y) {
 			}
 		}
 		// "sticky" land variable
-		elseif($runningTotal <= 9) {
+		elseif($runningTotal <= 10) {
 		    $GLOBALS['world'][$x][$y]=0;
 		}
 	}
@@ -269,6 +275,53 @@ function saveWorld() {
 	echo "width = ".$GLOBALS['width'].';';
 	echo '</script>';
 }
+function drawBitMap($dataArray) {
+	// gotta set up our incoming data!
+	$GLOBALS['world']=$dataArray[0];
+	$GLOBALS['width']=$dataArray[2];
+	$GLOBALS['height']=$dataArray[3];	
+	// this will be silly, to animate
+	$animCounter = 0;
+	// go through map
+	for($x=0;$x<$GLOBALS['width'];$x++) {
+		echo '<div style="clear:both"></div>';
+		for($y=0;$y<$GLOBALS['height'];$y++) { 
+			// calculate animation
+			// in milliseconds
+			$animTime = $animCounter/1000;
+			// city
+			if($GLOBALS['world'][$x][$y]==4) {
+				echo "<div style='width:".(100/$GLOBALS['width'])."vw;height:".(100/$GLOBALS['height'])."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square number super-dark'>4</div>";
+			}
+			// mountain
+			elseif($GLOBALS['world'][$x][$y]==3) {
+				echo "<div style='width:".(100/$GLOBALS['width'])."vw;height:".(100/$GLOBALS['height'])."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square number very-dark'>3</div>";
+			}
+			// grass
+			elseif($GLOBALS['world'][$x][$y]==2) {
+				echo "<div style='width:".(100/$GLOBALS['width'])."vw;height:".(100/$GLOBALS['height'])."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square number dark'>2</div>";
+			}
+			// island
+			elseif($GLOBALS['world'][$x][$y]==1) {
+				echo "<div style='width:".(100/$GLOBALS['width'])."vw;height:".(100/$GLOBALS['height'])."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square number normal'>1</div>";
+			}
+			// water
+			elseif($GLOBALS['world'][$x][$y]==0) {
+				echo "<div style='width:".(100/$GLOBALS['width'])."vw;height:".(100/$GLOBALS['height'])."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square number bright'>0</div>";
+			}
+			// deep-water
+			elseif($GLOBALS['world'][$x][$y]==-1) {
+				echo "<div style='width:".(100/$GLOBALS['width'])."vw;height:".(100/$GLOBALS['height'])."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square number kinda-bright'>-1</div>";
+			}
+			// abyss
+			elseif($GLOBALS['world'][$x][$y]<-1) {
+				echo "<div style='width:".(100/$GLOBALS['width'])."vw;height:".(100/$GLOBALS['height'])."vh;-webkit-animation-delay: ".$animTime."s;animation-delay: ".$animTime."s;' class='square number whitey'>-2</div>";
+			}
+			// increase animation counter
+			$animCounter++;
+		}
+	}
+}
 function drawMap() {
 	// this will be silly, to animate
 	$animCounter = 0;
@@ -338,8 +391,8 @@ function createMap($dataArray) {
 	// extra large
 	else {
 		//$GLOBALS['islandChance']= 15;
-		$GLOBALS['width'] = $GLOBALS['height'] = mt_rand(180,220);;//mt_rand(170,190);
-		$GLOBALS['iter']= mt_rand(400,700);
+		$GLOBALS['width'] = $GLOBALS['height'] = mt_rand(140,180);;//mt_rand(170,190);
+		$GLOBALS['iter']= mt_rand(400,600);
 		$GLOBALS['vision'] = 6;
 	}
 	// clean slate, a new world!

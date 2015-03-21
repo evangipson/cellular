@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <!-- font -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:100,300,700,600,400' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <title> :evngpsn-#cellular </title>
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="stylesheet" type="text/css" href="cell.css" >
@@ -33,12 +34,16 @@ if (!isset($_SESSION)) {
 	$thePortable =  'this is session id from index.php: ' .session_id();
 	// this function lives in <include>.php
 	debug_to_console($thePortable);
-
 }
 ?>
 </head>           
 <body>
-	<?php if(!isset($_GET['info']) && !isset($_GET['created'])): ?>    
+	<?php if(!isset($_GET['evolve']) && !isset($_GET['created']) && !isset($_GET['rawData'])): ?>	
+		<?php 
+			// variable init
+			$_SESSION['evolveId']=1; 
+			$_SESSION['worldName']=genWorldName();
+		?>
 		<div class="container">
 			<h1>World Generator</h1>
 			<form class="form" action="cellular.php?created=1" method="post">
@@ -75,35 +80,111 @@ if (!isset($_SESSION)) {
 			</form>
 		</div>
 	<?php else: ?>
-		<?php if(isset($_GET['created'])): ?>
+		<?php if(isset($_GET['rawData'])): ?>
+			<div class='world-container'>
+				<?php drawBitMap($_SESSION['bigArray']); ?>
+			</div>
+		<?php elseif(isset($_GET['created'])): ?>
 			<div class='world-container'>
 				<?php $_SESSION['bigArray']=createMap($_POST); ?>
 				<?php //$world = drawMap(12,12,$_POST['type']); ?>
 			</div>
 			<div class='toolTip shadow-1'>CLICK ON MAP TO <b>EVOLVE</b></div>
 		<?php else: ?>
+			<?php $_SESSION['evolveId']++; ?>
 			<div class='world-container'>
 				<?php $_SESSION['bigArray']=finalExpand($_SESSION['bigArray'][0],$_SESSION['bigArray'][1],$_SESSION['bigArray'][2],$_SESSION['bigArray'][3]); ?>
 				<?php //$world = drawMap(12,12,$_POST['type']); ?>
 			</div>
 		<?php endif; ?>
+		<div class='stickyMenu'><i class="fa fa-cog fa-2x"></i></div>
+		<div class='stickyPanel'>
+				<p class="list" style='width:100%;text-align:center;'><?php $_SESSION['worldName']; ?></p>
+					<p class="list"><?php echo "Cells"; ?></p>
+					<?php 
+						$amount = $_SESSION['bigArray'][2]*$_SESSION['bigArray'][3];
+					?>
+					<p class="data"><?php echo $amount; ?></p>
+				<?php if(!isset($_GET['rawData'])): ?>
+					<p class="list"><?php echo "Evolution"; ?></p>
+					<p class="data"><?php echo $_SESSION['evolveId']; ?></p>
+					<p class="list" style='width:100%;text-align:center;'>
+					<form action="cellular.php?rawData=1" method="post">	
+						<input class='submit' type="submit" value="Raw Map Data" name="mapdata"><br /> 
+					</form>
+				<?php else: ?>
+					<p class="list"><?php echo "Maximum Height"; ?></p>
+					<?php 
+						$max = 1;
+						for($x=0;$x<$_SESSION['bigArray'][2];$x++) {
+							for($y=0;$y<$_SESSION['bigArray'][3];$y++) {
+								if($_SESSION['bigArray'][0][$x][$y]>$max) {
+									$max=$_SESSION['bigArray'][0][$x][$y];
+								}
+							}
+						}
+						$_SESSION['max']=$max;
+					?>
+					<p class="data"><?php echo $_SESSION['max']; ?></p>
+					<div style="clear:both"></div>
+					<p class="list"><?php echo "Maximum Depth"; ?></p>
+					<?php 
+						$min = 0;
+						for($x=0;$x<$_SESSION['bigArray'][2];$x++) {
+							for($y=0;$y<$_SESSION['bigArray'][3];$y++) {
+								if($_SESSION['bigArray'][0][$x][$y]<$min) {
+									$min=$_SESSION['bigArray'][0][$x][$y];
+								}
+							}
+						}
+						$_SESSION['min']=$min;
+					?>
+					<p class="data"><?php echo $_SESSION['min']; ?></p>
+					<?php $theTempEvo =  $_SESSION['evolveId']+1; ?>
+					<form action="cellular.php?evolve=<?php echo $theTempEvo; ?>" method="post">	
+						<input class='submit' type="submit" value="Evolve Map Data" name="mapdata"><br /> 
+					</form>
+				<?php endif; ?>
+				<input class='submit closer' type="submit" value="Close" name="close"><br /> 
+			</p>
+		</div>
 		
 	<?php endif; ?>
 	<div class='loading'>Loading...</div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
-		
       $(document).ready(function(){
 		//$('.square').addClass('animated fadeIn');
-		$('.square').show().delay(1200).queue(function() {
-			$('.toolTip').addClass('animated fadeInDown');
-			$('.toolTip').show();
+		$('.square').show().delay(300).queue(function() {
+			$('.stickyMenu').addClass('animated bounceInUp');
+			$('.stickyMenu').show().delay(700).queue(function() {
+				$('.toolTip').addClass('animated fadeInDown');
+				$('.toolTip').show();
+			});
+		});
+		$('.stickyMenu').click(function() {
+			$('.stickyMenu').removeClass('bounceInLeft');
+			$('.stickyMenu').addClass('animated bounceOutLeft');
+			$('.stickyMenu').show();
+			$('.stickyPanel').removeClass('bounceOutLeft');
+			$('.stickyPanel').addClass('animated bounceInLeft');
+			$('.stickyPanel').show();
+		});
+		$('.closer').click(function() {
+			$('.stickyPanel').removeClass('bounceInLeft');
+			$('.stickyPanel').addClass('animated bounceOutLeft');
+			$('.stickyPanel').show();
+			$('.stickyMenu').removeClass('bounceOutLeft');
+			$('.stickyMenu').addClass('animated bounceInLeft');
+			$('.stickyMenu').show();
 		});
 		$('.square').click(function() {
+			// pull in session evolveId
+			var evolveId = "<?php echo $_SESSION['evolveId']+1; ?>";
 			// flush display
 			//$( ".world-container" ).empty();
 			// trigger PHP function
-			window.location = "cellular.php?info=1";
+			window.location = "cellular.php?evolve="+evolveId;
 		});
 		/*$('.square').click(function(e) {
 			$.ajax({ 

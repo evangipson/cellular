@@ -59,7 +59,7 @@ if (!isset($_SESSION)) {
 					<input type="text" name="island" id="island" value="4" /> 
 				</p> -->
 				<p>
-					<label for="island"><small>land expansion % (50-90%) </small></label>
+					<label for="island"><small>land expansion % (35-98%) </small></label>
 					<input type="text" style="color:#121212;" name="expand" id="expand" value="80" /> 
 				</p>
 				<!-- <p>
@@ -109,7 +109,7 @@ if (!isset($_SESSION)) {
 			</div>
 		<?php endif; ?>
 		<!-- STICKY GEAR -->
-		<div class='stickyMenu'><i class="fa fa-cog fa-2x"></i></div>
+		<div class='stickyMenu shadow-1'><i class="fa fa-cog fa-2x"></i></div>
 		<!-- STICKY PANEL OF DATA -->
 		<div class='stickyPanel'>
 			<!-- WORLD NAME -->
@@ -176,8 +176,22 @@ if (!isset($_SESSION)) {
 				<p class="list">Land Cover</p>
 				<p class="data">
 					<?php 
-						$theAmount=floor((($landCount+$waterCount)/$landCount)*10);
-						echo $theAmount.'%';
+						$landCount=0;
+						$waterCount=0;
+						$theEcho="";
+						// find our land to water tile count
+						for($x=0;$x<$_SESSION['bigArray'][2];$x++) {
+							for($y=0;$y<$_SESSION['bigArray'][3];$y++) {
+								if($_SESSION['bigArray'][0][$x][$y]>=1) {
+									$landCount++;
+								}
+								else {
+									$waterCount++;
+								}
+							}
+						}
+						$theAmount=$landCount/($landCount+$waterCount);
+						echo floor($theAmount*100).'%';
 					?>
 				</p>	
 				<form action="cellular.php?rawData=1" method="post">	
